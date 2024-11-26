@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name='viewport' content='width=device-width, initial scale=1.0'>
+  <title>Ecosphere</title>
+  <style>
+    *{box-sizing: border-box;}
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+@media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      align-items: center;
+    }
+    .header-right {
+      margin-right: 0;
+    }
+  }
+
+    .header {
+      overflow: hidden;
+      background-color: #153448;
+      padding: 10px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-family: Source Sans Pro;
+      letter-spacing: 4px;
+      margin-left: 40px;
+      font-size: calc(12px + 2vw); /* Scales with screen width */
+      color: #DFD0B8;
+    }
+    .header-right {
+      float: right;
+      margin-right: 40px;
+      font-family:'Abhaya Libre', serif;
+      font-size: 20px;
+      color: #DFD0B8;
+    }
+    .header-right a {
+      text-decoration: none; /* Remove underline */
+      color: #DFD0B8; /* Change color to white */
+      margin-left: 20px; /* Adjust spacing between links */
+    }
+    .video-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      overflow: hidden;
+      height: auto;
+    }
+    .video-container video {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .video-container h2 {
+      position: absolute;
+      top: 300px;
+      left: 50%;
+      font-family: Forum;
+      transform: translateX(-50%);
+      font-size: 80px;
+      color: #DFD0B8;
+      margin: 0;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+    .subtitle1 {
+      position: absolute;
+      top: 400px; /* Adjust the top value to position the text */
+      left: 50%;
+      font-family: Libre Franklin;
+      transform: translateX(-50%);
+      font-size: 25px; +
+      font-weight: 10;
+      color: #948979;
+      margin: 0;
+      opacity: 0.8;
+
+    }
+    .black-container {
+      background-color: #153448;
+      width: 100%;
+
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px;
+    }
+    .subtitle2 {
+      font-family: 'Poppins';
+      font-size: 30px;
+      text-align: justify;
+      color: #948979;
+      margin: 220px 0;
+      max-width: 1200px;
+      opacity: 0; /* Start with the text hidden */
+      transition: opacity 0.5s ease-in-out; /* Smooth transition */
+    }
+
+    .subtitle2.fade-in {
+      opacity: 1; /* Fade in to fully visible */
+    }
+    .subtitle2::before,
+    .subtitle2::after {
+      content: '';
+      display: block;
+      height: 2px; /* Line height */
+      background-color: #DFD0B8; /* Line color */
+      width: 100%; /* Line width */
+      position: relative;
+      align: center;
+      left: 0;
+    }
+
+    .subtitle2::before {
+      top: -100px; /* Position the line above the text (adjust as needed) */
+    }
+
+    .subtitle2::after {
+      bottom: -100px; /* Position the line below the text (adjust as needed) */
+    }
+
+
+    .black-container h3 {
+      font-family: 'Poppins', Light;
+      letter-spacing:20px;
+      font-size: 60px;
+      color: #DFD0B8;
+      margin: 0;
+      padding-top: 60px;
+      padding-bottom: 20px;
+    }
+    .image-container {
+      display: flex;
+      flex-wrap: wrap; /* Allows wrapping for smaller screens */
+      justify-content: center;
+    }
+    .image-item {
+      flex: 1 1 calc(33.33% - 20px); /* Three items per row, with space */
+      margin: 10px;
+    }
+    .image-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 40px;
+      padding: 0px;
+      background-color: none;
+      border-radius: 10px;
+      max-width: 300px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .image-item img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out; /* Add transition for transform and filter */
+    }
+
+    .image-item:hover img {
+      transform: scale(1.05); /* Slightly scale up the image */
+      filter: blur(5px); /* Blur the image */
+    }
+
+    .image-item .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+      color: #DFD0B8;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .image-item:hover .overlay {
+      opacity: 1; /* Show the overlay on hover */
+    }
+
+
+
+    .image-item img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-item p {
+      font-family: Poppins;
+      letter-spacing:3px;
+      font-size: 20px;
+      color: #DFD0B8;
+      margin: 30px 0 0 0;
+      text-align: center;
+    }
+    .black-container h4 {
+      font-family: Poppins;
+      letter-spacing:20px;
+      font-size: 60px;
+      color: #DFD0B8;
+      margin: 0;
+      padding-top: 60px;
+      padding-bottom: 20px;
+    }
+    .slider-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      margin-right: -10px;
+      margin-left: -10px;
+      background-color: #3C5B6F;
+      height: 500px;
+      padding: 40px;
+      position: relative;
+    }
+
+    .slider-text {
+      flex: 1;
+      font-family: Poppins;
+      font-size: 80px;
+      color: #948979;
+      text-align: left;
+      margin-left: 80px;
+
+    }
+
+    .slider-media {
+      flex: 1;
+    }
+
+    .slider-media video {
+      width: 100%;
+      border-radius: 0px;
+      padding-right: 80px;
+      margin-top:0;
+    }
+
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      background-color: #555;
+      border: none;
+      margin:10px;
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px 10px;
+
+    }
+
+    .slider-button:hover {
+      background-color: none;
+    }
+
+    .prev-button {
+      left: 0px; /* Positioning to the left of the container */
+    }
+
+    .next-button {
+      right: 0px; /* Positioning to the right of the container */
+    }
+
+    .black-container h5 {
+      font-family: Poppins;
+      letter-spacing:20px;
+      font-size: 60px;
+      color: #DFD0B8;
+      margin: 0;
+      padding-top: 100px;
+      padding-bottom: 20px;
+    }
+    .img {
+      max-width: 100%;
+      height: auto;
+    }
+    .image-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .image-box {
+      margin: 10px;
+      max-width: 350px;
+      background-color: #3C5B6F;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease-in-out;
+    }
+    .image-box:hover {
+      transform: scale(1.08); /* Scale up slightly on hover */
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+    }
+
+    .image-caption {
+      font-family: Poppins;
+      font-size: 20px;
+      color: #DFD0B8;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .image-description {
+      font-family: Poppins;
+      font-size: 16px;
+      color: #948979;
+      text-align: center;
+      padding: 0 10px 10px 10px;
+    }
+    .black-container h6 {
+      font-family: Poppins;
+      font-size: 90px;
+      color: #DFD0B8;
+      margin: 0;
+      padding-top: 150px;
+      padding-bottom: 120px;
+      padding-left: 60px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .take-action-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      max-width: 1200px;
+    }
+
+    .action-paragraph {
+      font-family: Poppins;
+      font-size: 30px;
+      color: #948979;
+      text-align: justify;
+      margin: 0;
+      padding-top: 150px;
+      padding-bottom: 120px;
+      padding-left: 100px; /* Adjust spacing between h6 and paragraph */
+    }
+
+    .line-break {
+      display: block; /* Force line break */
+    }
+
+    .footer {
+      background-color: #153448;
+      padding: 20px 10px; /* Increase padding to create more space */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-icons {
+      margin-bottom: 10px; /* Add margin-bottom to create space between icons and text */
+    }
+
+    .footer-icons a {
+      text-decoration: none; /* Remove underline */
+      color: white; /* Change color to white */
+      margin-left: 20px; /* Adjust spacing between links */
+    }
+
+    .footer-icons img {
+      width: 20px; /* Adjust the size of the icons */
+      height: 20px; /* Adjust the size of the icons */
+    }
+
+    .footer-text {
+      font-family: Source Sans Pro;
+      letter-spacing: 2px;
+      font-size: 14px;
+      color: #DFD0B8;
+      text-align: center;
+      margin-top: 10px; /* Add margin-top to create space between icons and text */
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Ecosphere</h1>
+    <div class="header-right">
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
+    </div>
+  </div>
+  <div class="video-container">
+    <h2>CLIMATE CHANGE</h2>
+    <p class="subtitle1">Together, we can create a sustainable future.</p>
+    <video autoplay loop muted>
+      <source src="cvideo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="black-container">
+    <p class="subtitle2">Climate change refers to significant and long-term changes in the average weather patterns on Earth. These changes can manifest as shifts in temperature, precipitation, and the frequency and intensity of extreme weather events.
+    While climate change can occur naturally through processes such as volcanic eruptions, variations in solar radiation, and natural greenhouse gas emissions, the term "climate change" is most commonly associated with the recent trends linked to human activities.</p>
+    <h3>CAUSES</h3>
+    <div class="image-container">
+      <div class="image-item">
+        <img src="image1.jpg" alt="Image 1">
+        <div class="overlay">DEFORESTATION</div>
+      </div>
+      <div class="image-item">
+        <img src="image2.jpg" alt="Image 2">
+        <div class="overlay">OVERPOPULATION</div>
+      </div>
+      <div class="image-item">
+        <img src="image3.jpg" alt="Image 3">
+        <div class="overlay">POWER GENERATION</div>
+      </div>
+    </div>
+    <h4>IMPACTS</h4>
+    <div class="slider-container" id="slider-container">
+      <button class="slider-button prev-button" onclick="prevSlide()">&#10094;</button>
+      <div class="slider-text" id="slider-text">
+        <!-- Text content goes here -->
+      </div>
+      <div class="slider-media" id="slider-media">
+        <!-- Video content goes here -->
+      </div>
+      <button class="slider-button next-button" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <h5>SOLUTIONS</h5>
+    <div class="image-grid">
+      <div class="image-box">
+        <img src="solution1.jpg" alt="Solution 1">
+        <div class="image-caption">Energy Efficiency</div>
+        <div class="image-description">Implementing energy-saving practices and technologies in homes, businesses, and transportation.</div>
+      </div>
+      <div class="image-box">
+        <img src="solution2.jpg" alt="Solution 2">
+        <div class="image-caption">Reforestation</div>
+        <div class="image-description">Planting trees to absorb CO2 and restore ecosystems.</div>
+      </div>
+      <div class="image-box">
+        <img src="solution3.jpg" alt="Solution 3">
+        <div class="image-caption">Sustainable Agriculture</div>
+        <div class="image-description">Adopting farming practices that reduce emissions and improve soil health.</div>
+      </div>
+      <div class="image-box">
+        <img src="solution4.jpg" alt="Solution 4">
+        <div class="image-caption">Renewable Energy</div>
+        <div class="image-description">Transitioning to solar, wind, and other renewable energy sources to reduce reliance on fossil fuels.</div>
+      </div>
+    </div>
+    <div class="take-action-container">
+      <h6>TAKE<span class="line-break"></span>ACTION</h6>
+      <p class="action-paragraph">The Earth is what we all have in common. Let's take decisive action for climate change, because our actions today will determine the world our children and grandchildren inherit. Together, we can protect our common home and create a sustainable future for all.</p>
+    </div>
+    <img width="1519px" src="3R.jpg" alt="Action Image">
+  </div>
+  <div class="footer">
+    <p class="footer-text">© 2024 Ecosphere. All rights reserved.</p>
+    <div class="footer-icons">
+      <a href="https://twitter.com" target="_blank">
+        <img src="twitter.png" alt="Twitter">
+      </a>
+      <a href="https://instagram.com" target="_blank">
+        <img src="instagram.png" alt="Instagram">
+      </a>
+      <a href="https://facebook.com" target="_blank">
+        <img src="facebook.png" alt="Facebook">
+      </a>
+      <a href="https://linkedin.com" target="_blank">
+        <img src="linkedin.png" alt="LinkedIn">
+      </a>
+    </div>
+  </div>
+  <script>
+    const slides = [
+      {
+        text: "Melting \n Ice Caps",
+        video: "climate_video.mp4"
+      },
+      {
+        text: "Extreme \n Weather",
+        video: "climate_video2.mp4"
+      },
+      {
+        text: "Ocean \n Acidification",
+        video: "climate_video3.mp4"
+      }
+    ];
+
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      const slide = slides[index];
+      document.getElementById('slider-text').innerText = slide.text;
+      document.getElementById('slider-media').innerHTML = `<video autoplay loop muted>
+        <source src="${slide.video}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>`;
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+      showSlide(currentSlide);
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+      showSlide(currentSlide);
+    }
+
+    // Initialize the first slide
+    showSlide(currentSlide);
+
+    function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+    }
+
+    function checkVisibility() {
+      const subtitle2 = document.querySelector('.subtitle2');
+      if (isElementInViewport(subtitle2)) {
+        subtitle2.classList.add('fade-in');
+      } else {
+        subtitle2.classList.remove('fade-in');
+      }
+    }
+
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('resize', checkVisibility);
+
+    // Initial check
+    checkVisibility();
+
+  </script>
+</body>
+</html>
